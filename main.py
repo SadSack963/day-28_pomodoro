@@ -33,7 +33,21 @@ def print_config(widget, name):
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 
+def start_timer():
+    count = 5 * 60
+    count_down(count)
+
+
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
+
+def count_down(count):
+    minutes = count // 60  # Floor operator
+    seconds = count % 60  # Modulus operator
+    # global canvas
+    canvas.itemconfig(timer_text, text=f"{minutes}:{seconds:02d}")
+    if count > 0:
+        window.after(1000, count_down, count - 1)
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -41,17 +55,18 @@ window = tk.Tk()
 window.title("Pomodoro")
 window.config(padx=100, pady=50, bg=YELLOW)
 
+
 label_activity = tk.Label(text="Timer", bg=YELLOW, fg=GREEN, font=(FONT_NAME, 30, "bold"))
 
-canvas = tk.Canvas(width=202, height=225)  # Slightly larger than image
+canvas = tk.Canvas(width=202, height=225, bg=YELLOW, highlightthickness=0)  # Slightly larger than image
 image = tk.PhotoImage(file="tomato.png")
-# x and y (tuple) specify the center of the image, adjust so that image is not cut off at edges
-canvas.create_image((102, 113), image=image)
-canvas.create_text((102, 131), text="00:00", fill="white", font=(FONT_NAME, 25, "bold"))  # clock
-canvas["bg"] = YELLOW
-canvas["highlightthickness"] = 0
+# x and y (tuple) specify the center of the image,
+# manually adjust so that image is not cut off at edges
+canvas.create_image(102, 113, image=image)
+# Again, manually adjust for best appearance
+timer_text = canvas.create_text((102, 131), text="00:00", fill="white", font=(FONT_NAME, 25, "bold"))  # clock
 
-button_start = tk.Button(text="Start", padx=5, pady=5, font=(FONT_NAME, 12, "bold"))
+button_start = tk.Button(text="Start", padx=5, pady=5, font=(FONT_NAME, 12, "bold"), command=start_timer)
 
 button_reset = tk.Button(text="Reset", padx=5, pady=5, font=(FONT_NAME, 12, "bold"))
 
@@ -65,6 +80,7 @@ canvas.grid(row=1, column=1)
 button_start.grid(row=2, column=0)
 button_reset.grid(row=2, column=2)
 label_tick.grid(row=3, column=1)
+
 
 # -------------------
 # print_config(widget=window, name="window")
