@@ -13,6 +13,7 @@ LONG_BREAK_MIN = 20
 
 # Print widget configuration
 def print_config(widget, name):
+    # Print to console
     # print(name + " Config:")
     # widget_config = widget.config()
     # for item in widget_config:
@@ -40,7 +41,7 @@ window = tk.Tk()
 window.title("Pomodoro")
 window.config(padx=100, pady=50, bg=YELLOW)
 
-label_activity = tk.Label(text="Timer")
+label_activity = tk.Label(text="Timer", bg=YELLOW, fg=GREEN, font=(FONT_NAME, 30, "bold"))
 
 canvas = tk.Canvas(width=202, height=225)  # Slightly larger than image
 image = tk.PhotoImage(file="tomato.png")
@@ -50,24 +51,28 @@ canvas.create_text((102, 131), text="00:00", fill="white", font=(FONT_NAME, 25, 
 canvas["bg"] = YELLOW
 canvas["highlightthickness"] = 0
 
-button_start = tk.Button(text="Start")
+button_start = tk.Button(text="Start", padx=5, pady=5, font=(FONT_NAME, 12, "bold"))
 
-button_reset = tk.Button(text="Reset")
+button_reset = tk.Button(text="Reset", padx=5, pady=5, font=(FONT_NAME, 12, "bold"))
 
-label_tick = tk.Label(text="ü")
+label_tick = tk.Label(text='✓', bg=YELLOW, fg=GREEN, font=(FONT_NAME, 20, "bold"))
+# label_tick = tk.Label(text=u'\u2713')
+# label_tick = tk.Label(text=u'\N{check mark}')
 
 # Grid layout
 label_activity.grid(row=0, column=1)
 canvas.grid(row=1, column=1)
-
+button_start.grid(row=2, column=0)
+button_reset.grid(row=2, column=2)
+label_tick.grid(row=3, column=1)
 
 # -------------------
-print_config(widget=window, name="window")
-print_config(widget=canvas, name="canvas")
-print_config(widget=label_activity, name="label_activity")
-print_config(widget=button_start, name="button_start")
-print_config(widget=button_reset, name="button_reset")
-print_config(widget=label_tick, name="label_tick")
+# print_config(widget=window, name="window")
+# print_config(widget=canvas, name="canvas")
+# print_config(widget=label_activity, name="label_activity")
+# print_config(widget=button_start, name="button_start")
+# print_config(widget=button_reset, name="button_reset")
+# print_config(widget=label_tick, name="label_tick")  # Can't write unicode "check mark" to file?
 
 # -------------------
 window.mainloop()
