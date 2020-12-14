@@ -26,7 +26,7 @@ def print_config(widget, name):
     # Write to text file
     widget_config = widget.config()
     filename = "./config/config_" + name + ".txt"
-    with open(filename, mode="w") as file:
+    with open(filename, mode="w", encoding="utf-16") as file:
         for item in widget_config:
             file.write(f"{item}, {widget_config[item]}\n")
 
@@ -121,12 +121,12 @@ label_tick.grid(row=3, column=1)
 
 
 # -------------------
-# print_config(widget=window, name="window")
-# print_config(widget=canvas, name="canvas")
-# print_config(widget=label_activity, name="label_activity")
-# print_config(widget=button_start, name="button_start")
-# print_config(widget=button_reset, name="button_reset")
-# print_config(widget=label_tick, name="label_tick")  # Can't write unicode "check mark" to file?
+print_config(widget=window, name="window")
+print_config(widget=canvas, name="canvas")
+print_config(widget=label_activity, name="label_activity")
+print_config(widget=button_start, name="button_start")
+print_config(widget=button_reset, name="button_reset")
+print_config(widget=label_tick, name="label_tick")  # Can't write unicode "check mark" to file?
 
 # -------------------
 window.mainloop()
