@@ -126,7 +126,7 @@ print_config(widget=canvas, name="canvas")
 print_config(widget=label_activity, name="label_activity")
 print_config(widget=button_start, name="button_start")
 print_config(widget=button_reset, name="button_reset")
-print_config(widget=label_tick, name="label_tick")  # Can't write unicode "check mark" to file?
+print_config(widget=label_tick, name="label_tick")
 
 # -------------------
 window.mainloop()
