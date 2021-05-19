@@ -16,19 +16,19 @@ stop = True
 # Print widget configuration
 def print_config(widget, name):
     # Print to console
-    # print(name + " Config:")
-    # widget_config = widget.config()
-    # for item in widget_config:
-    #     print(item, widget_config[item])
-    # print("\n")
-
-    # (create a config directory in the project tree)
-    # Write to text file
+    print(name + " Config:")
     widget_config = widget.config()
-    filename = "./config/config_" + name + ".txt"
-    with open(filename, mode="w", encoding="utf-16") as file:
-        for item in widget_config:
-            file.write(f"{item}, {widget_config[item]}\n")
+    for item in widget_config:
+        print(item, widget_config[item])
+    print("\n")
+
+    # # (create a config directory in the project tree)
+    # # Write to text file
+    # widget_config = widget.config()
+    # filename = "./config/config_" + name + ".txt"
+    # with open(filename, mode="w", encoding="utf-8") as file:
+    #     for item in widget_config:
+    #         file.write(f"{item}, {widget_config[item]}\n")
 
 
 # ---------------------------- TIMER RESET ------------------------------- # 
@@ -64,7 +64,6 @@ def start_timer(work=WORK_MIN, short=SHORT_BREAK_MIN, long=LONG_BREAK_MIN):
         label_activity["fg"] = PINK
     count_down(time)
 
-
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
 
 def count_down(count):
@@ -78,6 +77,11 @@ def count_down(count):
         if count > 0:
             window.after(1000, count_down, count - 1)
         else:
+            # Bring the window to the front of the stack
+            window.lift()
+            window.attributes("-topmost", True)
+            window.after_idle(window.attributes, '-topmost', False)
+
             if reps % 2 == 0:
                 label_tick["text"] = label_tick["text"] + "✓"
             reps += 1
@@ -92,7 +96,6 @@ def count_down(count):
 window = tk.Tk()
 window.title("Pomodoro")
 window.config(padx=100, pady=50, bg=YELLOW)
-
 
 label_activity = tk.Label(text="Timer", width=11, bg=YELLOW, fg=GREEN, font=(FONT_NAME, 30, "bold"))
 
@@ -127,6 +130,8 @@ print_config(widget=label_activity, name="label_activity")
 print_config(widget=button_start, name="button_start")
 print_config(widget=button_reset, name="button_reset")
 print_config(widget=label_tick, name="label_tick")
+
+print('canvas.itemconfigure(timer_text)', canvas.itemconfigure(timer_text))
 
 # -------------------
 window.mainloop()
