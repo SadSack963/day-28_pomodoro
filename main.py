@@ -11,6 +11,7 @@ SHORT_BREAK_MIN = 1
 LONG_BREAK_MIN = 1
 reps = 0
 stop = True
+pause = False
 
 
 # Print widget configuration
@@ -42,6 +43,19 @@ def reset_timer():
     label_tick["text"] = ""
     canvas.itemconfig(timer_text, text="00:00")
     button_start["state"] = "active"
+    # or use button_start.config(state="active")  
+
+
+# ---------------------------- TIMER PAUSE ------------------------------- #
+
+def pause_timer():
+    global pause
+    pause = not pause
+    if pause:
+        button_pause.config(text="Resume")
+    else:
+        button_pause.config(text="Pause")
+
 
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
@@ -50,6 +64,7 @@ def start_timer(work=WORK_MIN, short=SHORT_BREAK_MIN, long=LONG_BREAK_MIN):
     global reps, stop
     stop = False
     button_start["state"] = "disabled"
+    # or use button_start.config(state="disabled")
     if reps == 7:
         time = long * 60
         label_activity["text"] = "Long Break"
@@ -64,6 +79,7 @@ def start_timer(work=WORK_MIN, short=SHORT_BREAK_MIN, long=LONG_BREAK_MIN):
         label_activity["fg"] = PINK
     count_down(time)
 
+
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
 
 def count_down(count):
@@ -75,7 +91,10 @@ def count_down(count):
         canvas.itemconfig(timer_text, text=f"{minutes}:{seconds:02}")
         # Subtract 1 from count every 1000ms
         if count > 0:
-            window.after(1000, count_down, count - 1)
+            if pause:
+                window.after(0, count_down, count)
+            else:
+                window.after(1000, count_down, count - 1)
         else:
             # Bring the window to the front of the stack
             window.lift()
@@ -109,6 +128,8 @@ timer_text = canvas.create_text((102, 131), text="00:00", fill="white", font=(FO
 
 button_start = tk.Button(text="Start", padx=5, pady=5, font=(FONT_NAME, 12, "bold"), command=start_timer)
 
+button_pause = tk.Button(text="Pause", padx=5, pady=5, font=(FONT_NAME, 12, "bold"), command=pause_timer)
+
 button_reset = tk.Button(text="Reset", padx=5, pady=5, font=(FONT_NAME, 12, "bold"), command=reset_timer)
 
 label_tick = tk.Label(bg=YELLOW, fg=GREEN, font=(FONT_NAME, 20, "bold"))
@@ -119,6 +140,7 @@ label_tick = tk.Label(bg=YELLOW, fg=GREEN, font=(FONT_NAME, 20, "bold"))
 label_activity.grid(row=0, column=1)
 canvas.grid(row=1, column=1)
 button_start.grid(row=2, column=0)
+button_pause.grid(row=2, column=1)
 button_reset.grid(row=2, column=2)
 label_tick.grid(row=3, column=1)
 
