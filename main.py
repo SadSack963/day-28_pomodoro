@@ -6,9 +6,9 @@ RED = "#e7305b"
 GREEN = "#9bdeac"
 YELLOW = "#f7f5dd"
 FONT_NAME = "Courier"
-WORK_MIN = 1
-SHORT_BREAK_MIN = 1
-LONG_BREAK_MIN = 1
+WORK_MIN = 0.5
+SHORT_BREAK_MIN = 0.2
+LONG_BREAK_MIN = 0.4
 reps = 0
 stop = True
 pause = False
@@ -92,12 +92,23 @@ def count_down(count):
         # Subtract 1 from count every 1000ms
         if count > 0:
             if pause:
-                window.after(0, count_down, count)
+                window.after(1000, count_down, count)
             else:
                 window.after(1000, count_down, count - 1)
         else:
             # Bring the window to the front of the stack
-            window.lift()
+            print("Bring the window to the front of the stack")
+
+            # This works
+            # window.iconify()
+            # window.update()
+            # window.deiconify()
+
+            # This works
+            # window.focus_force()
+            # window.update()
+
+            # This works - does not grab focus
             window.attributes("-topmost", True)
             window.after_idle(window.attributes, '-topmost', False)
 
@@ -146,14 +157,14 @@ label_tick.grid(row=3, column=1)
 
 
 # -------------------
-print_config(widget=window, name="window")
-print_config(widget=canvas, name="canvas")
-print_config(widget=label_activity, name="label_activity")
-print_config(widget=button_start, name="button_start")
-print_config(widget=button_reset, name="button_reset")
-print_config(widget=label_tick, name="label_tick")
-
-print('canvas.itemconfigure(timer_text)', canvas.itemconfigure(timer_text))
+# print_config(widget=window, name="window")
+# print_config(widget=canvas, name="canvas")
+# print_config(widget=label_activity, name="label_activity")
+# print_config(widget=button_start, name="button_start")
+# print_config(widget=button_reset, name="button_reset")
+# print_config(widget=label_tick, name="label_tick")
+#
+# print('canvas.itemconfigure(timer_text)', canvas.itemconfigure(timer_text))
 
 # -------------------
 window.mainloop()
